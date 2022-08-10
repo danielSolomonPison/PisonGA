@@ -1,16 +1,17 @@
 package com.pison.hello_world
 
-import androidx.fragment.app.Fragment
-
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.pison.hello_world.databinding.LandingFragmentBinding
+
 
 private const val TAG = "LANDING FRAGMENT"
 
@@ -74,16 +75,30 @@ class LandingFragment : Fragment() {
         })*/
 
         viewModel.gestureReceived.observe(viewLifecycleOwner, { gesture ->
-            val gest = if (gesture == "DEBOUNCE_LDA_TEH") {
-                "Let's Fing Go"
-            } else{
-                "dummy"
+//            val gest = if (gesture == "DEBOUNCE_LDA_TEH") {
+//                "Let's Fing Go"
+//            } else{
+//                "dummy"
+//            }
+//            binding.detectedGestureVerdictText.text = gest
+//            val intent: Intent = context.getPackageManager().getLaunchIntentForPackage("com.package.name")
+//            val launchIntent: Intent? =
+//                context.getPackageManager().getLaunchIntentForPackage("com.package.address")
+//            if (launchIntent != null) {
+//                startActivity(launchIntent) //null pointer check in case package name was not found
+            val launchIntent: Intent? =
+                requireActivity()!!.getPackageManager().getLaunchIntentForPackage("com.google.android.googlequicksearchbox")
+            binding.detectedGestureVerdictText.text = launchIntent.toString()
+//            println(launchIntent)
+            if (launchIntent != null) {
+                binding.detectedGestureVerdictText.text = gesture
+                println("working")
+                startActivity(launchIntent) //null pointer check in case package name was not found
             }
-            binding.detectedGestureVerdictText.text = gest
+
         })
 
         viewModel.eulerReceived.observe(viewLifecycleOwner, { euler ->
-
             binding.pitchValueText.text = getString(R.string.round).format(euler.pitch)
             binding.yawValueText.text = getString(R.string.round).format(euler.yaw)
             binding.rollValueText.text = getString(R.string.round).format(euler.roll)
