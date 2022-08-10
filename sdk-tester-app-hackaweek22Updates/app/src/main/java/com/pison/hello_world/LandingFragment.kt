@@ -10,12 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.pison.hello_world.Application.Companion.spotifyAppRemote
 import com.pison.hello_world.databinding.LandingFragmentBinding
+import com.spotify.android.appremote.api.SpotifyAppRemote
 
 
 private const val TAG = "LANDING FRAGMENT"
 
 class LandingFragment : Fragment() {
+
 
     private lateinit var viewModel: LandingViewModel
     private lateinit var binding: LandingFragmentBinding
@@ -75,27 +78,16 @@ class LandingFragment : Fragment() {
         })*/
 
         viewModel.gestureReceived.observe(viewLifecycleOwner, { gesture ->
-//            val gest = if (gesture == "DEBOUNCE_LDA_TEH") {
-//                "Let's Fing Go"
-//            } else{
-//                "dummy"
-//            }
-//            binding.detectedGestureVerdictText.text = gest
-//            val intent: Intent = context.getPackageManager().getLaunchIntentForPackage("com.package.name")
 //            val launchIntent: Intent? =
-//                context.getPackageManager().getLaunchIntentForPackage("com.package.address")
+//                requireActivity()!!.getPackageManager().getLaunchIntentForPackage("com.google.android.googlequicksearchbox")
+//            binding.detectedGestureVerdictText.text = launchIntent.toString()
+////            println(launchIntent)
 //            if (launchIntent != null) {
+//                binding.detectedGestureVerdictText.text = gesture
+//                println("working")
 //                startActivity(launchIntent) //null pointer check in case package name was not found
-            val launchIntent: Intent? =
-                requireActivity()!!.getPackageManager().getLaunchIntentForPackage("com.google.android.googlequicksearchbox")
-            binding.detectedGestureVerdictText.text = launchIntent.toString()
-//            println(launchIntent)
-            if (launchIntent != null) {
-                binding.detectedGestureVerdictText.text = gesture
-                println("working")
-                startActivity(launchIntent) //null pointer check in case package name was not found
-            }
-
+//            }
+            spotifyAppRemote.playerApi.skipNext()
         })
 
         viewModel.eulerReceived.observe(viewLifecycleOwner, { euler ->
