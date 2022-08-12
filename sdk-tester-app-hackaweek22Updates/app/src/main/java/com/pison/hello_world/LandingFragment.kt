@@ -22,6 +22,9 @@ class LandingFragment : Fragment() {
 
     private lateinit var viewModel: LandingViewModel
     private lateinit var binding: LandingFragmentBinding
+    private var awaken = false
+    private var test = ""
+    private var prev = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -56,8 +59,8 @@ class LandingFragment : Fragment() {
         })
 
         viewModel.lockState.observe(viewLifecycleOwner, { lockState ->
-            binding.lockStateText.text =
-                if (lockState) getString(R.string.device_locked) else getString(R.string.device_unlocked)
+//            binding.lockStateText.text =
+//                if (awaken) "Unlocked" else "Locked"
         })
 
         viewModel.deviceStateBatteryReceived.observe(viewLifecycleOwner, { deviceState ->
@@ -76,21 +79,19 @@ class LandingFragment : Fragment() {
                 binding.activationStateCheckBox.isChecked = false
             }
         })*/
-
-        viewModel.gestureReceived.observe(viewLifecycleOwner, { gesture ->
+        viewModel.gestureReceived.observe(viewLifecycleOwner) { gesture ->
 //            val launchIntent: Intent? =
 //                requireActivity()!!.getPackageManager().getLaunchIntentForPackage("com.google.android.googlequicksearchbox")
-//            binding.detectedGestureVerdictText.text = launchIntent.toString()
-////            println(launchIntent)
-//            if (launchIntent != null) {
-//                binding.detectedGestureVerdictText.text = gesture
-//                println("working")
-//                startActivity(launchIntent) //null pointer check in case package name was not found
+            binding.detectedGestureVerdictText.text = gesture
+//            if ((gesture == "SHAKE_N_INEH" || gesture == "SHAKE_N_TEH") && (prev == gesture || prev == "")) {
+//                awaken = awaken == false
 //            }
-            spotifyAppRemote.playerApi.skipNext()
-        })
+//            prev = gesture
 
+        }
+        
         viewModel.eulerReceived.observe(viewLifecycleOwner, { euler ->
+            test =  getString(R.string.round).format(euler.pitch)
             binding.pitchValueText.text = getString(R.string.round).format(euler.pitch)
             binding.yawValueText.text = getString(R.string.round).format(euler.yaw)
             binding.rollValueText.text = getString(R.string.round).format(euler.roll)
